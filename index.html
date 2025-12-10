@@ -107,7 +107,7 @@
             min-width: 260px;
             box-sizing: border-box;
         }
-        
+         
         #bottom-bar {
             position: absolute;
             bottom: 0;
@@ -215,11 +215,11 @@
         #rotate-right-button {
             border-left: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
+         
         .rotation-button-group .group-button svg {
             transform: rotate(180deg);
         }
-        
+         
         #add-button, #edit-button {
             position: absolute;
             bottom: 90px;
@@ -281,7 +281,7 @@
             color: #1A202C;
             background-color: white;
         }
-        
+         
         #top-left-controls {
             position: absolute;
             top: 40px; 
@@ -442,7 +442,7 @@
         .gesture-svg .arrow {
             fill: #CBD5E0;
         }
-        
+         
         .dialog-container {
             position: fixed;
             top: 0;
@@ -493,7 +493,7 @@
             background-color: #E53E3E; 
             color: white;
         }
-        
+         
         #furniture-modal {
             position: fixed;
             top: 0;
@@ -600,9 +600,9 @@
         <div id="ios-ar-links">
         </div>
     </div>
-    
+   
     <div id="overlay">
-        
+       
         <div id="help-modal">
             <div id="help-content-container">
                 <button id="close-help-button">&times;</button>
@@ -739,8 +739,8 @@
                                 <div class="help-card">
                                     <div class="icon-container">
                                         <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="transform: rotate(180deg);">
-                                           <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
-                                        </svg>
+                                             <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h-3" />
+                                         </svg>
                                     </div>
                                     <h4>回転</h4>
                                     <p>タップで45度、長押しで連続回転します。</p>
@@ -770,7 +770,7 @@
             <span style="font-size: 1.25em; font-weight: bold;">床を認識中<span id="loading-dots"></span></span><br><br>
             カメラをゆっくりと<br>床に向けて<br>動かしてください
         </div>
-        
+       
         <button id="mode-switch-button">
             <span id="edit-mode-label" class="mode-label">編集モード</span>
             <span id="view-mode-label" class="mode-label">鑑賞モード</span>
@@ -790,11 +790,11 @@
                 </svg>
             </button>
         </div>
-        
+       
         <div id="bottom-bar">
             <button id="add-button" class="circle-button"></button>
             <button id="edit-button" class="circle-button"></button>
-            
+           
             <div id="transform-controls">
                 <div id="scale-slider-container">
                     <span class="slider-icon">-</span>
@@ -845,7 +845,7 @@
             }
         }
     </script>
-    
+   
     <script type="module">
         import * as THREE from 'three';
         import { ARButton } from 'three/addons/webxr/ARButton.js';
@@ -868,17 +868,16 @@
             
             let isDraggingSlider = false; 
             let dotAnimationTimer = null;
-            
+           
             let helpModal, closeHelpButton;
             let tabButtons, helpPages;
             let confirmDialog, objectPendingDeletion = null;
 
             const furnitureData = [
-                { name: '太陽光パネル',   file: 'sun-panel.glb',     height: 0.3, thumbnail: 'chair.png' },
-                { name: '太陽光パネル（垂直）',   file: 'sun-panel-vertical.glb',     height: 4.8,  thumbnail: 'stand.png' },
-                { name: '連結した太陽光パネル（垂直）',   file: 'w-sun-panel.glb', height: 4.7,  thumbnail: 'book.png' },
-                { name: '草',   file: 'grass-block.glb', height: 0.15,  thumbnail: 'bookshelf.png' },
- 
+                { name: '太陽光パネル',  file: 'sun-panel.glb',     height: 0.3, thumbnail: 'chair.png' },
+                { name: '太陽光パネル（垂直）',  file: 'sun-panel-vertical.glb',     height: 4.8,  thumbnail: 'stand.png' },
+                { name: '連結した太陽光パネル（垂直）',  file: 'w-sun-panel2.glb', height: 4.7,  thumbnail: 'book.png' }, // *** 👈 ここを変更しました ***
+                { name: '草',  file: 'grass-block.glb', height: 0.15,  thumbnail: 'bookshelf.png' },
             ];
             let currentFurniture = furnitureData[0];
             let previewObject = null;
@@ -904,12 +903,12 @@
                 startY: 0,
                 longPressTimer: null,
             };
-            
+           
             let isRotatingContinuously = false;
             let continuousRotationDirection = 0;
-            
+           
             init();
-            
+           
             function createCrossMark() {
                 const canvas = document.createElement('canvas');
                 const size = 256;
@@ -956,7 +955,7 @@
                     .then(() => console.log("すべてのモデルの事前読み込みが完了しました！"))
                     .catch(error => console.error("モデルの事前読み込み中にエラーが発生しました。", error));
             }
-            
+           
             function resetScene() {
                 placedObjects.forEach(object => scene.remove(object));
                 placedObjects.length = 0;
@@ -968,7 +967,7 @@
 
                 if(reticle) scene.remove(reticle);
                 reticle = null;
-                
+               
                 appState = 'IDLE';
                 isFloorDetected = false;
                 floorY = null;
@@ -982,10 +981,10 @@
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
                 scene.add(new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3));
-                
+               
                 crossMark = createCrossMark();
                 scene.add(crossMark);
-                
+               
                 renderer = new THREE.WebGLRenderer({ 
                     antialias: true, 
                     alpha: true, 
@@ -999,12 +998,12 @@
                 overlay.addEventListener('touchstart', handleTouchStart, { passive: false });
                 overlay.addEventListener('touchmove', handleTouchMove, { passive: false });
                 overlay.addEventListener('touchend', handleTouchEnd);
-                
+               
                 document.getElementById('add-button').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 32px; height: 32px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`;
                 document.getElementById('edit-button').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /></svg>`;
                 document.getElementById('delete-button').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.134H8.09a2.09 2.09 0 0 0-2.09 2.134v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>`;
                 document.getElementById('confirm-button').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>`;
-                
+               
                 const rotateLeftIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" /></svg>`;
                 const rotateRightIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" /></svg>`;
                 document.getElementById('rotate-left-button').innerHTML = rotateLeftIconSVG;
@@ -1027,7 +1026,7 @@
                     document.getElementById('mode-switch-button').style.display = 'none';
                     stopDotAnimation(); 
                 });
-                
+               
                 animate();
 
                 document.body.appendChild(ARButton.createButton(renderer, {
@@ -1052,15 +1051,15 @@
                 const furnitureModal = document.getElementById('furniture-modal');
                 const closeModalButton = document.getElementById('close-modal-button');
                 const furnitureGrid = document.getElementById('furniture-grid');
-                
+               
                 furnitureGrid.innerHTML = '';
                 furnitureData.forEach(item => {
                     const gridItem = document.createElement('div');
                     gridItem.className = 'grid-item';
-                    
+                   
                     const p = document.createElement('p');
                     p.textContent = item.name;
-                    
+                   
                     gridItem.appendChild(p);
 
                     gridItem.addEventListener('click', (e) => {
@@ -1071,7 +1070,7 @@
                         furnitureModal.style.display = 'none';
                         updateUI();
                     });
-                    
+                   
                     furnitureGrid.appendChild(gridItem);
                 });
 
@@ -1100,7 +1099,7 @@
                         currentSession.end();
                     }
                 }
-                
+               
                 helpModal = document.getElementById('help-modal');
                 closeHelpButton = document.getElementById('close-help-button');
                 document.getElementById('help-button').addEventListener('click', (e) => {
@@ -1116,7 +1115,7 @@
                         helpModal.style.display = 'none';
                     }
                 });
-                
+               
                 tabButtons = document.querySelectorAll('.help-tab-button');
                 helpPages = document.querySelectorAll('.help-page');
                 tabButtons.forEach(button => {
@@ -1130,7 +1129,7 @@
                         });
                     });
                 });
-                
+               
                 confirmDialog = document.getElementById('confirm-dialog');
                 const confirmYesBtn = document.getElementById('confirm-delete-yes');
                 const confirmNoBtn = document.getElementById('confirm-delete-no');
@@ -1165,7 +1164,7 @@
                 });
 
                 document.getElementById('edit-button').addEventListener('click', (e) => { e.stopPropagation(); onSelect(); });
-                
+               
                 const rotateLeftButton = document.getElementById('rotate-left-button');
                 const rotateRightButton = document.getElementById('rotate-right-button');
                 setupRotationButtonEvents(rotateLeftButton, 1);
@@ -1173,7 +1172,7 @@
 
                 document.getElementById('delete-button').addEventListener('click', (e) => { e.stopPropagation(); onDelete(); });
                 document.getElementById('confirm-button').addEventListener('click', (e) => { e.stopPropagation(); onConfirm(); });
-                
+               
                 scaleSliderContainer = document.getElementById('scale-slider-container');
                 sliderTrack = document.getElementById('slider-track');
                 sliderHandle = document.getElementById('slider-handle');
@@ -1189,7 +1188,7 @@
                     percent = Math.max(0, Math.min(1, percent));
                     updateScaleFromSlider(percent);
                 };
-                
+               
                 sliderHandle.addEventListener('mousedown', onSliderDragStart);
                 document.addEventListener('mousemove', onSliderDragMove);
                 document.addEventListener('mouseup', onSliderDragEnd);
@@ -1220,20 +1219,20 @@
                 button.addEventListener('touchend', pressEnd);
                 button.addEventListener('mouseleave', pressEnd);
             }
-            
+           
             function getDistance(touches) {
                 const dx = touches[0].clientX - touches[1].clientX;
                 const dy = touches[0].clientY - touches[1].clientY;
                 return Math.sqrt(dx * dx + dy * dy);
             }
-            
+           
             function onObjectTap(event) {
                 const touch = event.changedTouches[0];
                 const tapPosition = new THREE.Vector2(
                     (touch.clientX / window.innerWidth) * 2 - 1,
                     - (touch.clientY / window.innerHeight) * 2 + 1
                 );
-                
+               
                 raycaster.setFromCamera(tapPosition, camera);
 
                 if (appState === 'PLACING' || appState === 'EDITING') {
@@ -1257,7 +1256,7 @@
                     }
                 }
             }
-            
+           
             function handleLongPress(tappedObject) {
                 if (!tappedObject || confirmDialog.style.display === 'flex') return;
                 objectPendingDeletion = tappedObject;
@@ -1272,13 +1271,13 @@
                 gestureState.startTime = Date.now();
                 gestureState.startX = event.touches[0].clientX;
                 gestureState.startY = event.touches[0].clientY;
-                
+               
                 if (gestureState.touchCount === 1) {
                     if (!isEditMode) return;
                     clearTimeout(gestureState.longPressTimer);
                     gestureState.longPressTimer = setTimeout(() => {
                         gestureState.longPressTimer = null; 
-                        
+                       
                         const tapPosition = new THREE.Vector2(
                             (gestureState.startX / window.innerWidth) * 2 - 1,
                             - (gestureState.startY / window.innerHeight) * 2 + 1
@@ -1293,7 +1292,7 @@
                         } else if (appState === 'EDITING' && selectedObject) {
                             objectsToCheck = [selectedObject];
                         }
-                        
+                       
                         const intersects = raycaster.intersectObjects(objectsToCheck, true);
 
                         if (intersects.length > 0) {
@@ -1327,7 +1326,7 @@
             function handleTouchMove(event) {
                 if (event.target !== event.currentTarget || confirmDialog.style.display === 'flex') return;
                 event.preventDefault();
-                
+               
                 if (gestureState.longPressTimer) {
                     const moveX = event.touches[0].clientX;
                     const moveY = event.touches[0].clientY;
@@ -1352,7 +1351,7 @@
                     if (gestureState.initialDistance === 0) return; 
                     const currentDistance = getDistance(event.touches);
                     const scaleRatio = currentDistance / gestureState.initialDistance;
-                    
+                   
                     let newMultiplier = gestureState.originalMultiplier * scaleRatio;
                     newMultiplier = Math.max(0.5, Math.min(2.0, newMultiplier));
 
@@ -1366,11 +1365,11 @@
 
             function handleTouchEnd(event) {
                 if (event.target !== event.currentTarget) return;
-                
+               
                 const wasLongPressTriggered = !gestureState.longPressTimer;
                 clearTimeout(gestureState.longPressTimer);
                 gestureState.longPressTimer = null;
-                
+               
                 const touchDuration = Date.now() - gestureState.startTime;
                 const touchEndX = event.changedTouches[0].clientX;
                 const touchEndY = event.changedTouches[0].clientY;
@@ -1382,7 +1381,7 @@
                 if (!wasLongPressTriggered && touchDuration < 200 && distanceMoved < 10) {
                     onObjectTap(event);
                 }
-                
+               
                 if (event.touches.length === 0) {
                     gestureState.isInteracting = false;
                 }
@@ -1391,7 +1390,7 @@
                 }
                 gestureState.touchCount = event.touches.length;
             }
-            
+           
             function updateSliderForObject(object) {
                 if (!object) return;
                 const multiplier = object.userData.scaleMultiplier || 1.0;
@@ -1403,7 +1402,7 @@
                 const handleWidth = sliderHandle.offsetWidth;
                 const trackWidth = sliderTrack.offsetWidth;
                 sliderHandle.style.left = `calc(${percent * 100}% - ${handleWidth * percent}px)`;
-                
+               
                 const scale = 0.8 + 0.4 * percent;
                 sliderHandle.style.transform = `translateY(-50%) scale(${scale})`;
             }
@@ -1411,10 +1410,10 @@
             function updateScaleFromSlider(percent) {
                 const activeObject = (appState === 'PLACING') ? previewObject : selectedObject;
                 if (!activeObject) return;
-                
+               
                 const multiplier = 0.5 + percent * 1.5;
                 activeObject.userData.scaleMultiplier = multiplier;
-                
+               
                 const initialScale = activeObject.userData.initialScale;
                 activeObject.scale.copy(initialScale).multiplyScalar(multiplier);
 
@@ -1428,18 +1427,18 @@
                 }
                 const gltf = preloadedModels.get(currentFurniture.file);
                 if (!gltf) return;
-                
+               
                 previewObject = gltf.scene.clone();
                 setObjectTransparency(previewObject, true);
 
                 const initialBox = new THREE.Box3().setFromObject(previewObject);
                 const initialCenter = new THREE.Vector3();
                 initialBox.getCenter(initialCenter);
-                
+               
                 const size = initialBox.getSize(new THREE.Vector3());
                 const scaleFactor = currentFurniture.height / size.y;
                 previewObject.scale.set(scaleFactor, scaleFactor, scaleFactor);
-                
+               
                 previewObject.userData.initialScale = previewObject.scale.clone();
                 previewObject.userData.scaleMultiplier = 1.0;
                 previewObject.userData.centerOffset = initialCenter.multiplyScalar(scaleFactor);
@@ -1449,16 +1448,16 @@
                 scene.add(previewObject);
                 updateSliderForObject(previewObject);
             }
-            
+           
             function onSelect() {
                 if (hoveredObject) {
                     selectAndEditObject(hoveredObject);
                 }
             }
-            
+           
             function selectAndEditObject(objectToEdit) {
                 if (!isEditMode || appState !== 'IDLE' || !objectToEdit) return;
-                
+               
                 if (selectedObject) {
                     setObjectTransparency(selectedObject, false);
                 }
@@ -1466,7 +1465,7 @@
                 if (hoveredObject === selectedObject) {
                     hoveredObject = null;
                 }
-                
+               
                 setObjectTransparency(selectedObject, true);
                 appState = 'EDITING';
                 updateUI();
@@ -1483,17 +1482,17 @@
                     updateUI();
                 }
             }
-            
+           
             function onRotate(direction) {
                 const target = (appState === 'PLACING') ? previewObject : selectedObject;
                 if (target) {
                     target.rotation.y += (Math.PI / 4) * direction;
                 }
             }
-            
+           
             function startDeleteAnimation(objectToDelete) {
                 if (!objectToDelete) return;
-                
+               
                 const indexInPlaced = placedObjects.indexOf(objectToDelete);
                 if (indexInPlaced > -1) {
                     placedObjects.splice(indexInPlaced, 1);
@@ -1505,7 +1504,7 @@
                     duration: 0.3,
                     initialY: objectToDelete.position.y
                 });
-                
+               
                 if (objectToDelete === selectedObject) {
                     selectedObject = null;
                     appState = 'IDLE';
@@ -1516,7 +1515,7 @@
                     updateUI();
                 }
             }
-            
+           
             function onDelete() {
                 if (appState === 'EDITING' && selectedObject) {
                     handleLongPress(selectedObject);
@@ -1524,7 +1523,7 @@
                     handleLongPress(previewObject);
                 }
             }
-            
+           
             function placeNewObject() { 
                 if (!previewObject) return;
                 const solidObject = previewObject.clone();
@@ -1542,7 +1541,7 @@
                 appState = 'IDLE';
                 updateUI();
             }
-            
+           
             function setObjectTransparency(object, isTransparent, opacity = 0.7) {
                 if (!object) return;
                 object.traverse(child => {
@@ -1559,11 +1558,11 @@
                 const modeSwitchButton = document.getElementById('mode-switch-button');
                 const editModeLabel = document.getElementById('edit-mode-label');
                 const viewModeLabel = document.getElementById('view-mode-label');
-                
+               
                 const helpButton = document.getElementById('help-button');
                 const transformControls = document.getElementById('transform-controls');
                 const decisionControls = document.getElementById('decision-controls');
-                
+               
                 document.getElementById('exit-ar-button').style.display = 'flex';
                 helpButton.style.display = 'flex';
                 modeSwitchButton.style.display = 'flex';
@@ -1601,7 +1600,7 @@
                 } else { 
                     editModeLabel.classList.remove('active');
                     viewModeLabel.classList.add('active');
-                    
+                   
                     addButton.style.display = 'none';
                     editButton.style.display = 'none';
                     transformControls.style.display = 'none';
@@ -1612,9 +1611,9 @@
             function handleHover() {
                 if (gestureState.isInteracting || isRotatingContinuously || gestureState.longPressTimer) {
                     if(hoveredObject) {
-                          setObjectTransparency(hoveredObject, false);
-                          hoveredObject = null;
-                          updateUI();
+                            setObjectTransparency(hoveredObject, false);
+                            hoveredObject = null;
+                            updateUI();
                     }
                     return;
                 }
@@ -1627,7 +1626,7 @@
                     }
                     return;
                 }
-                
+               
                 raycaster.setFromCamera({ x: 0, y: 0 }, camera);
                 const intersects = raycaster.intersectObjects(placedObjects, true);
                 let newHoveredObject = null;
@@ -1641,7 +1640,7 @@
                         currentObject = currentObject.parent;
                     }
                 }
-                
+               
                 if (newHoveredObject !== hoveredObject) {
                     if (hoveredObject) setObjectTransparency(hoveredObject, false);
                     if (newHoveredObject && newHoveredObject !== selectedObject) {
@@ -1651,7 +1650,7 @@
                     updateUI();
                 }
             }
-            
+           
             function startDotAnimation() {
                 if (dotAnimationTimer) return; 
                 const dotsElement = document.getElementById('loading-dots');
@@ -1659,7 +1658,7 @@
 
                 let dotCount = 0;
                 const dots = ['・', '・・', '・・・'];
-                
+               
                 dotAnimationTimer = setInterval(() => {
                     dotsElement.textContent = dots[dotCount % dots.length];
                     dotCount++;
@@ -1683,7 +1682,7 @@
                 for (let i = objectsToDelete.length - 1; i >= 0; i--) {
                     const item = objectsToDelete[i];
                     const progress = (elapsedTime - item.startTime) / item.duration;
-                    
+                   
                     if (progress < 1) {
                         item.object.position.y = item.initialY + progress * 0.5;
                         const opacity = 1.0 - progress;
@@ -1697,7 +1696,7 @@
                 if (!renderer.xr.isPresenting) {
                     return;
                 }
-                
+               
                 if (isRotatingContinuously && (appState === 'PLACING' || appState === 'EDITING')) {
                     const target = (appState === 'PLACING') ? previewObject : selectedObject;
                     if (target) {
@@ -1707,7 +1706,7 @@
                 }
 
                 handleHover();
-                
+               
                 const instructionText = document.getElementById('instruction-text');
                 let isPlaceable = false;
                 const activeObject = (appState === 'PLACING') ? previewObject : selectedObject;
@@ -1722,26 +1721,26 @@
                             const hit = hitTestResults[0];
                             const hitPose = hit.getPose(referenceSpace);
                             const hitY = hitPose.transform.position.y;
-                            
+                           
                             if (floorY === null) floorY = hitY;
-                            
+                           
                             if (!isFloorDetected) {
                                 isFloorDetected = true;
                                 updateUI();
                             }
-                            
+                           
                             // ▼▼▼▼▼ ここからがコメントアウト対象 ▼▼▼▼▼
 
                             // const Y_TOLERANCE = 0.2;
                             // isPlaceable = Math.abs(hitY - floorY) < Y_TOLERANCE;
-                            
+                           
                             // 上の判定を無効化し、常に「配置可能」とするためのコード
                             isPlaceable = true;
 
                             // ▲▲▲▲▲ ここまでがコメントアウト対象 ▲▲▲▲▲
-                            
+                           
                             if(reticle) reticle.matrix.fromArray(hitPose.transform.matrix);
-                            
+                           
                             if (instructionText.style.display !== 'none') {
                                 instructionText.style.display = 'none';
                                 stopDotAnimation();
@@ -1752,10 +1751,10 @@
                                     activeObject.position.setFromMatrixPosition(reticle.matrix);
                                 }
                                 if(activeObject) activeObject.visible = true;
-                                
+                               
                                 if (appState === 'PLACING' || appState === 'EDITING') {
                                     if(reticle) reticle.visible = isPlaceable;
-                                    
+                                   
                                     // ▼▼▼▼▼ ここからがコメントアウト対象 ▼▼▼▼▼
                                     // crossMark.visible = !isPlaceable; 
                                     // if (crossMark.visible && activeObject) {
@@ -1789,7 +1788,7 @@
                         }
                     }
                 }
-                
+               
                 if (isEditMode && (appState === 'PLACING' || appState === 'EDITING')) {
                     const decisionConfirmButton = document.querySelector('#decision-controls #confirm-button');
 
@@ -1797,7 +1796,7 @@
                     // decisionConfirmButton.disabled = !isPlaceable;
                     // ▲▲▲▲▲ ここまでがコメントアウト対象 ▲▲▲▲▲
                 }
-                
+               
                 if (!hitTestSourceRequested && renderer.xr.getSession()) {
                     const session = renderer.xr.getSession();
                     session.requestReferenceSpace('viewer').then((referenceSpace) => {
@@ -1810,15 +1809,12 @@
                     });
                     hitTestSourceRequested = true;
                 }
-                
+               
                 renderer.render(scene, camera);
             }
         }
-        
+       
         main();
     </script>
 </body>
 </html>
-
-
-
